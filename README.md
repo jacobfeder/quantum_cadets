@@ -1,5 +1,5 @@
 # Quantum Noise Analyzer
-##IBM Qiskit Community Summer Jam 2020 Hackathon
+IBM Qiskit Community Summer Jam 2020 Hackathon
 
 Efficient quantum signal processing is desirable to understand the dynamics of noisy quantum systems. To measure quantum noise, the scientist typically performs a measurement that projects the quantum state of the system onto a classical computational basis. Phase information is lost during this projection, and many repeated measurements on the quantum system are required to estimate the quantum state -- a feat often undesirable in the case of quantum sensors. However, processing speed and throughput can be increased by coherently analyzing quantum data on a quantum computer, and avoiding projective readout. We demonstrate this with our quantum noise analyzer (QNA). 
 
