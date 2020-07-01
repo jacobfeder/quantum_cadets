@@ -2,7 +2,7 @@
 
 Efficient quantum signal processing is desirable to understand the dynamics of noisy quantum systems. To measure quantum noise, the scientist typically performs a measurement that projects the quantum state of the system onto a classical computational basis. Phase information is lost during this projection, and many repeated measurements on the quantum system are required to estimate the quantum state -- a feat often undesirable in the case of quantum sensors. However, processing speed and throughput can be increased by coherently analyzing quantum data on a quantum computer, and avoiding projective readout. We demonstrate this with our quantum noise analyzer (QNA).
 
-(https://github.com/jacobfeder/quantum_cadets/blob/master/pictures/circuit.pdf)
+![QNA circuit](https://github.com/jacobfeder/quantum_cadets/blob/master/pictures/circuit.pdf)
 
 First, we create a quantum register in an equal superposition state and a single sensing qubit. We then entangle only one of the register states with the sensor qubit that accumulates the phase information from the sensing. After disentangling the sensor and the register, which re-initializes the sensor, various MCMT gates deterministically move the phase to the appropriate multi-qubit quantum register state. After the sensing sequence is done and all of the phase information is encoded, QNA implements a Quantum Fourier Transform (QFT) to transform the signal from time domain into the frequency domain. Encoding quantum data directly into a quantum register exponentially reduces the qubit and gate requirements of the QFT as compared to the classical fourier transform with the same number of classical bits.
 
@@ -14,7 +14,7 @@ Our code is generalized and therefore can work with an arbitrary number of regis
 
 We then show a real application of QNA by measuring decoherence of a single qubit using a Ramsey sequence.
 
-(https://github.com/jacobfeder/quantum_cadets/blob/master/pictures/t2_code.png)
+![T2 noise measurement](https://github.com/jacobfeder/quantum_cadets/blob/master/pictures/t2_code.png)
 
 By example of our QNA, we have presented a new paradigm where quantum data is directly analyzed on a quantum processor. The next step towards on-chip quantum noise analysis will require understanding the effects of finite qubit coherence on the QNA performance. Robust implementation of the QNA on IBM Q will allow us to fully leverage the rapid development of quantum technological infrastructure. For instance, our quantum signal processing algorithm can be generalized to two-qubit gate couplings or even larger quantum sensor networks. A dynamical decoupling pulse sequence can be employed to accumulate phase on a sensor qubit from a nearby qubit that is rotating at a known frequency. This could help IBM diagnose problems with decoherence due to two-qubit gate couplings and improve them.
 
