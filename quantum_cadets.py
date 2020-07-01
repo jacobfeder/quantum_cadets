@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import signal
 from qiskit import *
 from qiskit.circuit import ControlledGate, Gate, Instruction, Qubit, QuantumRegister, QuantumCircuit
 from qiskit.visualization import plot_histogram
@@ -115,6 +116,12 @@ def quantum_cadets(n_qubits, noise_circuit, damping_error=0.02):
 	plt.scatter(freq, qft_result, label='QFT')
 	plt.xlabel('Frequency (Hz)')
 
+	# add interpolation to make the plot look nicer
+	interp_deg = 10
+	interp_freq = np.arange(interp_deg*2**register_size) / interp_deg
+	interp_qft_result = signal.resample(qft_result, interp_deg*2**register_size)
+	plt.plot(interp_freq, interp_qft_result, label='QFT (interpolation)')
+	
 	# print the final measurement results
 	print('QFT spectrum:') 
 	print(qft_result)
@@ -155,4 +162,4 @@ if __name__ == "__main__":
 
 	# arg 1: number of qubits (QFT size)
 	# arg 2: noise function
-	quantum_cadets(6, combo, damping_error=0.02)
+	quantum_cadets(4, combo, damping_error=0.02)
