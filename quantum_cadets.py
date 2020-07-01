@@ -77,7 +77,7 @@ def quantum_cadets(n_qubits, noise_circuit, damping_error=0.02):
 
 	# display the quantum circuit in text form
 	print(qc.draw('text'))
-	# qc.draw('mpl')
+	#qc.draw('mpl')
 	plt.show()
 
 	# noise model
@@ -113,15 +113,9 @@ def quantum_cadets(n_qubits, noise_circuit, damping_error=0.02):
 				qft_result[0] = counts[f_bin_str] / shots
 
 	freq = np.arange(2**register_size)
-	plt.scatter(freq, qft_result, label='QFT')
+	plt.plot(freq, qft_result, label='QFT')
 	plt.xlabel('Frequency (Hz)')
 
-	# add interpolation to make the plot look nicer
-	interp_deg = 10
-	interp_freq = np.arange(interp_deg*2**register_size) / interp_deg
-	interp_qft_result = signal.resample(qft_result, interp_deg*2**register_size)
-	plt.plot(interp_freq, interp_qft_result, label='QFT (interpolation)')
-	
 	# print the final measurement results
 	print('QFT spectrum:') 
 	print(qft_result)
@@ -130,36 +124,28 @@ def quantum_cadets(n_qubits, noise_circuit, damping_error=0.02):
 	plt.show()
 
 if __name__ == "__main__":
-	def narrowband_noise(time, f):
+	def narrowband_noise(time):
 		"""
 		Apply a single-frequency noise source
 		"""
+		f = 13.1
 		qr = QuantumRegister(1)
 		qc = QuantumCircuit(qr, name='narrowband_noise')
 		qc.append(RZGate(2 * np.pi * f * time), [qr[0]])
 		return qc
 
-	def broadband_noise(time):
+	def internal_t2_noise(time):
 		"""
 		Apply a large number of identity gates, which will
 		accumulate errors due to the inherent T2 noise
 		"""
-		n_ids = 40
+		n_ids = int(80*time) + 1
 		qr = QuantumRegister(1)
-		qc = QuantumCircuit(qr, name='broadband_noise')
-		qc = pad_id_gates(qc, qr, 0, n_ids)		
+		qc = QuantumCircuit(qr, name='t2_noise')
+		qc.h(qr[0])
+		qc = pad_id_gates(qc, qr, 0, n_ids)
 		return qc
 
-	def combo(time):
-		"""
-		Combine the narrowband and broadband noise circuits
-		"""
-		qr = QuantumRegister(1)
-		qc = QuantumCircuit(qr, name='combo_noise')
-		qc.append(narrowband_noise(time, 3), [qr[0]])
-		qc.append(broadband_noise(time), [qr[0]])
-		return qc
-
-	# arg 1: number of qubits (QFT size)
+	# arg 1: number of qubits (QFT size + 1)
 	# arg 2: noise function
-	quantum_cadets(4, combo, damping_error=0.02)
+	quantum_cadets(7, internal_t2_noise, damping_error=0.02)
